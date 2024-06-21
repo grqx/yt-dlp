@@ -1545,6 +1545,71 @@ class BiliBiliSearchIE(SearchInfoExtractor):
                 yield self.url_result(video['arcurl'], 'BiliBili', str(video['aid']))
 
 
+class BiliBiliBangumiSearchIE(SearchInfoExtractor):
+    IE_DESC = 'Bilibili Bangumi search'
+    _MAX_RESULTS = 100000
+    _SEARCH_KEY = 'bilibangumisearch'
+    _TESTS = [{
+        'url': 'bilibangumi:CAROLE & TUESDAY',
+        'info_dict': {
+            'id': '24097891',
+            'title': 'CAROLE & TUESDAY',
+            'description': 'md5:42417ad33d1eaa1c93bfd2dd1626b829',
+        },
+        'playlist_mincount': 25,
+    }, {
+        'url': 'https://www.bilibili.com/bangumi/media/md1565/',
+        'info_dict': {
+            'id': '1565',
+            'title': '攻壳机动队 S.A.C. 2nd GIG',
+            'description': 'md5:46cac00bafd645b97f4d6df616fc576d',
+        },
+        'playlist_count': 26,
+        'playlist': [{
+            'info_dict': {
+                'id': '68540',
+                'ext': 'mp4',
+                'series': '攻壳机动队',
+                'series_id': '1077',
+                'season': '第二季',
+                'season_id': '1565',
+                'season_number': 2,
+                'episode': '再启动 REEMBODY',
+                'episode_id': '68540',
+                'episode_number': 1,
+                'title': '1 再启动 REEMBODY',
+                'duration': 1525.777,
+                'timestamp': 1425074413,
+                'upload_date': '20150227',
+                'thumbnail': r're:^https?://.*\.(jpg|jpeg|png)$',
+            },
+        }],
+    }]
+
+    def _search_results(self, query):
+        if not self._get_cookies('https://api.bilibili.com').get('buvid3'):
+            self._set_cookie('.bilibili.com', 'buvid3', f'{uuid.uuid4()}infoc')
+        for page_num in itertools.count(1):
+            videos = self._download_json(
+                'https://api.bilibili.com/x/web-interface/search/type', query,
+                note=f'Extracting results from page {page_num}', query={
+                    'Search_key': query,
+                    'keyword': query,
+                    'page': page_num,
+                    'context': '',
+                    'duration': 0,
+                    'tids_2': '',
+                    '__refresh__': 'true',
+                    'search_type': 'media_bangumi',
+                    'tids': 0,
+                    'highlight': 1,
+                })['data'].get('result')
+            if not videos:
+                break
+            for video in videos:
+                yield self.url_result(video['url'])
+
+
 class BilibiliAudioBaseIE(InfoExtractor):
     def _call_api(self, path, sid, query=None):
         if not query:
