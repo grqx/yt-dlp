@@ -1555,7 +1555,14 @@ class BiliBiliBangumiSearchIE(SearchInfoExtractor):
             'id': '翼神传说 间奏曲：她与她自己',
             'title': '翼神传说 间奏曲：她与她自己',
         },
-        'playlist_mincount': 1,
+        'playlist_count': 1,
+        'playlist': [{
+            'url': 'https://www.bilibili.com/bangumi/play/ep87395',
+            'info_dict': {
+                'id': '3960',
+                'ext': 'mp4',
+            },
+        }],
         'skip': 'geo-restricted',
     }]
 
