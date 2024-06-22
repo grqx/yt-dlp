@@ -1550,40 +1550,13 @@ class BiliBiliBangumiSearchIE(SearchInfoExtractor):
     _MAX_RESULTS = 100000
     _SEARCH_KEY = 'bilibangumisearch'
     _TESTS = [{
-        'url': 'bilibangumi:CAROLE & TUESDAY',
+        'url': 'bilibangumisearch:翼神传说 间奏曲：她与她自己',
         'info_dict': {
-            'id': '24097891',
-            'title': 'CAROLE & TUESDAY',
-            'description': 'md5:42417ad33d1eaa1c93bfd2dd1626b829',
+            'id': '翼神传说 间奏曲：她与她自己',
+            'title': '翼神传说 间奏曲：她与她自己',
         },
-        'playlist_mincount': 25,
-    }, {
-        'url': 'https://www.bilibili.com/bangumi/media/md1565/',
-        'info_dict': {
-            'id': '1565',
-            'title': '攻壳机动队 S.A.C. 2nd GIG',
-            'description': 'md5:46cac00bafd645b97f4d6df616fc576d',
-        },
-        'playlist_count': 26,
-        'playlist': [{
-            'info_dict': {
-                'id': '68540',
-                'ext': 'mp4',
-                'series': '攻壳机动队',
-                'series_id': '1077',
-                'season': '第二季',
-                'season_id': '1565',
-                'season_number': 2,
-                'episode': '再启动 REEMBODY',
-                'episode_id': '68540',
-                'episode_number': 1,
-                'title': '1 再启动 REEMBODY',
-                'duration': 1525.777,
-                'timestamp': 1425074413,
-                'upload_date': '20150227',
-                'thumbnail': r're:^https?://.*\.(jpg|jpeg|png)$',
-            },
-        }],
+        'playlist_mincount': 1,
+        'skip': 'geo-restricted',
     }]
 
     def _search_results(self, query):
